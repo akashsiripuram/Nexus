@@ -81,4 +81,18 @@ const getUser = async (req, res) => {
         });
     }
 };
-export { createUser, loginUser, getUser };
+
+const getAllUsers=async(req,res)=>{
+    try{
+        const users = await User.find({ _id: { $ne: req.user.id } });
+        return res.status(200).json({
+            users
+        })
+    }catch(err){
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+export { createUser, loginUser, getUser,getAllUsers };

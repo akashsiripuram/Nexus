@@ -4,6 +4,6 @@ import verifyToken from "../middleware/verifyToken.js";
 
 const router=express.Router();
 router.post("/create",verifyToken,createProject);
-router.get("/",verifyToken,getProjects)
+router.get("/",verifyToken,getProjects);
 
 export default router;
