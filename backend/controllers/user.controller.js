@@ -31,7 +31,6 @@ const loginUser = async (req, res) => {
                 message: "User does not exist",
             });
         }
-        console.log(existingUser);
         const compare = await bcrypt.compare(password, existingUser.password);
         console.log(compare);
         if (!compare) {
