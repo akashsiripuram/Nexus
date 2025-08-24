@@ -27,6 +27,7 @@ export const createForum = async (req, res) => {
 
 export const getForums = async (req, res) => {
   try {
+  
     const forums = await Forum.find()
       .sort({ createdAt: -1 })
       .populate("createdBy", "name") // populate forum creator's name
@@ -113,6 +114,7 @@ export const getComments = async (req, res) => {
         message: "Forum not found",
       });
     }
+    console.log(forum)
     res.status(200).json({
       status: true,
       comments: forum.comments,
