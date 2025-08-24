@@ -78,7 +78,7 @@ const Login = () => {
                 Nexus
               </h1>
               <p className="text-xl lg:text-2xl xl:text-3xl font-semibold text-gray-700 dark:text-gray-300">
-                Cloud-Based Task Manager
+                Task Manager
               </p>
             </div>
             

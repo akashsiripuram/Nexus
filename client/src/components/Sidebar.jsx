@@ -274,9 +274,6 @@ const Sidebar = () => {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
                   Nexus
                 </h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-                  Cloud-Based Task Manager
-                </p>
               </div>
             )}
           </div>
