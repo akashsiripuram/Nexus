@@ -46,13 +46,7 @@ const Navbar = () => {
 
       <div className="flex gap-3 items-center">
         {/* Theme Toggle */}
-        <button
-          onClick={toggleTheme}
-          className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200"
-          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-        >
-          {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
-        </button>
+       
 
         {/* User Avatar */}
         <div className="flex items-center gap-3">

@@ -36,31 +36,14 @@ function Layout() {
     if (isDark) {
       root.style.setProperty('--bg-color', '#111827');
     } else {
-      root.style.setProperty('--bg-color', '#f9fafb');
+      root.style.setProperty('--bg-color', '#ffffff');
     }
-    
-    // Force background on all elements
-    const forceBackground = () => {
-      const elements = document.querySelectorAll('html, body, #root, .main-content, .content-wrapper, .scrollable-content, .overflow-fix');
-      elements.forEach(el => {
-        if (el) {
-          el.style.backgroundColor = isDark ? '#111827' : '#f9fafb';
-          el.style.background = isDark ? '#111827' : '#f9fafb';
-        }
-      });
-    };
-    
-    // Run immediately and after a short delay
-    forceBackground();
-    setTimeout(forceBackground, 100);
-    setTimeout(forceBackground, 500);
   }, [isDark]);
   
   const location = useLocation();
   return user ? (
     <div 
       className="w-full h-screen flex flex-col lg:flex-row transition-colors duration-300"
-      style={{ backgroundColor: 'var(--bg-color, #f9fafb)' }}
     >
       {/* Desktop Sidebar - Fixed height with its own scroll */}
       <div className="h-screen bg-white dark:bg-gray-800 hidden lg:flex flex-col border-r border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300 ease-in-out z-10">
@@ -75,18 +58,15 @@ function Layout() {
       {/* Main Content - Separate scrollable area */}
       <div 
         className="flex-1 flex flex-col min-h-screen content-wrapper"
-        style={{ backgroundColor: 'var(--bg-color, #f9fafb)' }}
       >
         <div className="navbar">
           <Navbar />
         </div>
         <div 
           className="flex-1 overflow-y-auto main-scroll main-content-area"
-          style={{ backgroundColor: 'var(--bg-color, #f9fafb)' }}
         >
           <div 
             className="p-4 lg:p-6 xl:p-8 max-w-7xl mx-auto min-h-full overflow-fix"
-            style={{ backgroundColor: 'var(--bg-color, #f9fafb)' }}
           >
             <Outlet />
           </div>
@@ -148,7 +128,7 @@ const MobileSidebar = () => {
 
 function App() {
   return (
-    <main className="w-full min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 main-content">
+    <main className="w-full min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       <Routes>
         <Route element={<Layout />}>
           <Route index path="/" element={<Navigate to="/dashboard" />} />

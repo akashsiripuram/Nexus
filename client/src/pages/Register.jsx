@@ -53,7 +53,7 @@ const Register = () => {
   }, [user]);
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-white dark:bg-gray-900 transition-colors duration-300">
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}

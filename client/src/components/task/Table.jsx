@@ -68,8 +68,8 @@ const Table = ({ tasks }) => {
   };
 
   const TableHeader = () => (
-    <thead className="w-full border-b border-gray-300">
-      <tr className="w-full text-black  text-left">
+    <thead className="w-full border-b border-gray-200 dark:border-gray-700">
+      <tr className="w-full text-gray-900 dark:text-white text-left">
         <th className="py-2">Task Title</th>
         <th className="py-2">Priority</th>
         <th className="py-2">Created By</th>
@@ -82,7 +82,7 @@ const Table = ({ tasks }) => {
 
   const TableRow = ({ task }) => (
     <tr 
-      className="border-b border-gray-200 text-gray-600 hover:bg-gray-300/10 cursor-pointer"
+      className="border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-colors"
       onClick={(e) => handleRowClick(e, task._id)}
     >
       <td className="py-2">
@@ -91,7 +91,7 @@ const Table = ({ tasks }) => {
             className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])}
           />
           <div className="flex items-center gap-2">
-            <p className="w-full line-clamp-2 text-base text-black">
+            <p className="w-full line-clamp-2 text-base text-gray-900 dark:text-white">
               {task?.title}
             </p>
             {task.team?.some(member => member.email === user.email) && (
@@ -127,14 +127,14 @@ const Table = ({ tasks }) => {
       </td>
 
       <td className="py-2">
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-gray-600 dark:text-gray-400">
           {formatDate(new Date(task?.createdAt))}
         </span>
       </td>
 
       <td className="py-2">
         <div className="flex items-center gap-3">
-          <div className="flex gap-1 items-center text-sm text-gray-600">
+          <div className="flex gap-1 items-center text-sm text-gray-600 dark:text-gray-400">
             <BiMessageAltDetail />
             <span>{task?.activities?.length}</span>
           </div>
@@ -184,7 +184,7 @@ const Table = ({ tasks }) => {
   );
   return (
     <>
-      <div className="bg-white  px-2 md:px-4 pt-4 pb-9 shadow-md rounded">
+      <div className="bg-white dark:bg-gray-800 px-2 md:px-4 pt-4 pb-9 shadow-md rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="overflow-x-auto">
           <table className="w-full ">
             <TableHeader />

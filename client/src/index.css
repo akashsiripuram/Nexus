@@ -19,32 +19,32 @@
 
 /* Global background and scrollbar fixes */
 html, body, #root {
-  background-color: #f9fafb !important;
+  background-color: #ffffff;
   min-height: 100vh;
 }
 
 html.dark, body.dark, #root.dark,
 html[class*="dark"], body[class*="dark"], #root[class*="dark"] {
-  background-color: #111827 !important;
+  background-color: #111827;
 }
 
 /* Force background on root elements */
 html {
-  background-color: #f9fafb !important;
+  background-color: #ffffff;
 }
 
 body {
-  background-color: #f9fafb !important;
+  background-color: #ffffff;
 }
 
 #root {
-  background-color: #f9fafb !important;
+  background-color: #ffffff;
 }
 
 /* Dark mode overrides */
 html.dark, body.dark, #root.dark,
 html[class*="dark"], body[class*="dark"], #root[class*="dark"] {
-  background-color: #111827 !important;
+  background-color: #111827;
 }
 
 
@@ -151,28 +151,28 @@ html[class*="dark"], body[class*="dark"], #root[class*="dark"] {
 
 /* Ensure content area maintains background during scroll */
 .content-wrapper {
-  background-color: #f9fafb !important;
+  background-color: #ffffff;
   min-height: 100%;
 }
 
 .dark .content-wrapper,
 [class*="dark"] .content-wrapper {
-  background-color: #111827 !important;
+  background-color: #111827;
 }
 
 /* Fix for any overflow areas */
 .overflow-fix {
-  background-color: #f9fafb !important;
+  background-color: #ffffff;
 }
 
 .dark .overflow-fix,
 [class*="dark"] .overflow-fix {
-  background-color: #111827 !important;
+  background-color: #111827;
 }
 
 /* CSS Variables for theme colors */
 :root {
-  --bg-color: #f9fafb;
+  --bg-color: #ffffff;
   --bg-color-dark: #111827;
 }
 
@@ -187,31 +187,21 @@ html[class*="dark"], body[class*="dark"], #root[class*="dark"] {
 
 /* Global background enforcement */
 html, body {
-  background-color: var(--bg-color) !important;
-  background: var(--bg-color) !important;
-}
-
-/* Ensure all elements inherit the background */
-* {
-  background-color: inherit;
+  background-color: var(--bg-color);
+  background: var(--bg-color);
 }
 
 /* Force background on specific elements that need it */
 html, body, #root, .main-content, .content-wrapper, .scrollable-content, .overflow-fix {
-  background-color: var(--bg-color) !important;
-  background: var(--bg-color) !important;
-}
-
-/* Additional background coverage */
-* {
-  background-color: inherit;
+  background-color: var(--bg-color);
+  background: var(--bg-color);
 }
 
 /* Force background on all main containers */
 .main-container,
 .page-wrapper,
 .content-area {
-  background-color: #f9fafb !important;
+  background-color: #ffffff;
 }
 
 .dark .main-container,
@@ -220,14 +210,14 @@ html, body, #root, .main-content, .content-wrapper, .scrollable-content, .overfl
 [class*="dark"] .main-container,
 [class*="dark"] .page-wrapper,
 [class*="dark"] .content-area {
-  background-color: #111827 !important;
+  background-color: #111827;
 }
 
 /* Ensure no white backgrounds in any scrollable area */
 .overflow-y-auto,
 .overflow-y-scroll,
 .scroll-container {
-  background-color: #f9fafb !important;
+  background-color: #ffffff;
 }
 
 .dark .overflow-y-auto,
@@ -236,7 +226,7 @@ html, body, #root, .main-content, .content-wrapper, .scrollable-content, .overfl
 [class*="dark"] .overflow-y-auto,
 [class*="dark"] .overflow-y-scroll,
 [class*="dark"] .scroll-container {
-  background-color: #111827 !important;
+  background-color: #111827;
 }
 
 /* Custom component classes */
