@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "start": "nodemon index.js",
-    "websocket": "node websocket.js",
-    "dev": "concurrently \"npm start\" \"npm run websocket\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": 
+  {
+  "start": "node index.js",       
+  "server": "nodemon index.js",   
+  "websocket": "node websocket.js",
+  "dev": "concurrently \"npm run server\" \"npm run websocket\""
+},
+
   "author": "",
   "license": "ISC",
   "dependencies": {

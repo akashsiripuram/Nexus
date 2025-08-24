@@ -1,0 +1,11 @@
+{
+    "name": "websocket-server",
+    "type": "module",
+    "scripts": {
+        "start": "node websocket.js"
+    },
+    "dependencies": {
+        "dotenv": "^17.2.1",
+        "ws": "^8.16.0"
+    }
+}

@@ -1,6 +1,10 @@
+import 'dotenv/config';
 import { WebSocketServer } from 'ws';
 
-const wss = new WebSocketServer({ port: 8080 });
+dotenv.config();
+const PORT = process.env.PORT || 8080;
+const wss = new WebSocketServer({ port: PORT, host: '0.0.0.0' });
+
 
 // Store active connections and rooms
 const rooms = new Map();
