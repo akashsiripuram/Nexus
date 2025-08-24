@@ -98,7 +98,7 @@ const Timesheet = () => {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Weekly Timesheet</h1>
-        <p className="text-gray-600">Auto-generated from your tasks</p>
+        <p className="text-gray-300">Auto-generated from your tasks</p>
       </div>
 
       {/* Week Selection */}
