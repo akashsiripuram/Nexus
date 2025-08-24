@@ -20,6 +20,7 @@ import ChatList from "./pages/ChatList";
 import { setCredentials, setOpenSidebar } from "./redux/slices/authSlice";
 import Register from "./pages/Register";
 import { useTheme } from "./contexts/ThemeContext";
+import Timesheet from "./pages/Timesheet";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -142,6 +143,7 @@ function App() {
           <Route path="/task/:id" element={<TaskDetails />} />
           <Route path="/forums" element={<Forums />} />
           <Route path="/forums/:id" element={<ForumDetail />} />
+          <Route path="/timesheet" element={<Timesheet />} />
           <Route path="/chat" element={<ChatList />} />
           <Route path="/chat/:id/:username" element={<Chat />} />
         </Route>

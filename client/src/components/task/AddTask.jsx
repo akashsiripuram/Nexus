@@ -97,7 +97,7 @@ const AddTask = ({ open, setOpen, task, type }) => {
         <form onSubmit={handleSubmit(submitHandler)}>
           <Dialog.Title
             as="h2"
-            className="text-base font-bold leading-6 text-gray-900 mb-4"
+            className="text-base font-bold leading-6 text-white mb-4"
           >
             {task ? "UPDATE TASK" : "ADD TASK"}
           </Dialog.Title>
@@ -179,7 +179,7 @@ const AddTask = ({ open, setOpen, task, type }) => {
               </div> */}
             </div>
 
-            <div className="bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4">
+            <div className="py-6 sm:flex sm:flex-row-reverse gap-4">
               {uploading ? (
                 <span className="text-sm py-2 text-red-500">
                   Uploading assets

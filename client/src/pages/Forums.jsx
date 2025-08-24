@@ -206,7 +206,7 @@ const Forums = () => {
       {showForm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md relative">
-            <h2 className="text-xl font-semibold mb-4">Create New Forum</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-300">Create New Forum</h2>
             <form onSubmit={handleCreateForum} className="space-y-4">
               <input
                 type="text"
