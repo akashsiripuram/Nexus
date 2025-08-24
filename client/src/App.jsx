@@ -15,6 +15,8 @@ import Users from "./pages/Users";
 import Dashboard from "./pages/dashboard";
 import Forums from "./pages/Forums";
 import ForumDetail from "./pages/ForumDetail";
+import Chat from "./pages/chat";
+import ChatList from "./pages/ChatList";
 import { setCredentials, setOpenSidebar } from "./redux/slices/authSlice";
 import Register from "./pages/Register";
 import { useTheme } from "./contexts/ThemeContext";
@@ -140,6 +142,8 @@ function App() {
           <Route path="/task/:id" element={<TaskDetails />} />
           <Route path="/forums" element={<Forums />} />
           <Route path="/forums/:id" element={<ForumDetail />} />
+          <Route path="/chat" element={<ChatList />} />
+          <Route path="/chat/:id/:username" element={<Chat />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

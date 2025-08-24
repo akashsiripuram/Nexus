@@ -6,6 +6,7 @@ import {
   deleteUserProfile,
   getNotificationsList,
   getTeamList,
+  getUsers,
   loginUser,
   logoutUser,
   markNotificationRead,
@@ -18,6 +19,7 @@ const router = express.Router();
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
+router.get("/get-users",protectRoute,getUsers);
 
 router.get("/get-team", protectRoute, isAdminRoute, getTeamList);
 router.get("/notifications", protectRoute, getNotificationsList);

@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/slices/authSlice";
 import { getInitials } from "../utils";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const UserAvatar = ({ user: propUser, size = "md", showMenu = true }) => {
   const [open, setOpen] = useState(false);
@@ -17,10 +19,30 @@ const UserAvatar = ({ user: propUser, size = "md", showMenu = true }) => {
   // Use prop user if provided, otherwise use auth user
   const user = propUser || authUser;
 
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     console.log("logout");
-    navigate("/login");
-    dispatch(logout());
+    try {
+      // Call the server logout endpoint to clear the HTTP-only cookie
+      await axios.post(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      
+      // Clear any client-side cookies
+      Cookies.remove("token");
+      
+      navigate("/login");
+      dispatch(logout());
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Even if the API call fails, still clear local state
+      Cookies.remove("token");
+      navigate("/login");
+      dispatch(logout());
+    }
   };
 
   // If no menu is needed, just render the avatar

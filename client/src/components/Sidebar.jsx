@@ -27,7 +27,8 @@ import {
   FaBell,
   FaCog,
   FaQuestionCircle,
-  FaComments
+  FaComments,
+  FaEnvelope
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
@@ -66,6 +67,13 @@ const navigationSections = [
         icon: <FaComments size={20} />,
         badge:null,
         description:"Discussion group"
+      },
+      {
+        label:"Chat",
+        link:"chat",
+        icon: <FaEnvelope size={20} />,
+        badge:"Live",
+        description:"Real-time messaging"
       }
     ]
   },

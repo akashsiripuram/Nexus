@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useTheme } from "../contexts/ThemeContext";
 import { FiSun, FiMoon } from "react-icons/fi";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.auth);
@@ -15,10 +17,31 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
 
-  const logoutHandler = () => {
-    toast.success("Logged out successfully!");
-    navigate("/login");
-    dispatch(logout());
+  const logoutHandler = async () => {
+    try {
+      // Call the server logout endpoint to clear the HTTP-only cookie
+      await axios.post(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      
+      // Clear any client-side cookies
+      Cookies.remove("token");
+      
+      toast.success("Logged out successfully!");
+      navigate("/login");
+      dispatch(logout());
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Even if the API call fails, still clear local state
+      Cookies.remove("token");
+      toast.success("Logged out successfully!");
+      navigate("/login");
+      dispatch(logout());
+    }
   };
 
   return (

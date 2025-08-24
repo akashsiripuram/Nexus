@@ -103,8 +103,10 @@ export const loginUser = async (req, res) => {
 export const logoutUser = async (req, res) => {
   try {
     res.cookie("token", "", {
-      htttpOnly: true,
+      httpOnly: true,
       expires: new Date(0),
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: process.env.NODE_ENV !== "development" ? "none" : "lax",
     });
 
     res.status(200).json({ message: "Logout successful" });
@@ -247,5 +249,20 @@ export const deleteUserProfile = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
+export const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({ _id: { $ne: req.user.userId } });
+    return res.status(200).json({
+      success: false,
+      users,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Error",
+    });
   }
 };
