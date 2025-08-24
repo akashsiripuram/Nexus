@@ -31,6 +31,9 @@ const Login = () => {
         {
           email: data.email,
           password: data.password,
+        },
+        {
+          withCredentials: true, // <<-- important
         }
       );
       if (response.data) {
