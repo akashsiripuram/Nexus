@@ -7,6 +7,7 @@ import {
   duplicateTask,
   getTask,
   getTasks,
+  getTasksByUser,
   postTaskActivity,
   trashTask,
   updateTask,
@@ -21,6 +22,7 @@ router.post("/activity/:id", protectRoute, postTaskActivity);
 
 router.get("/dashboard", protectRoute, dashboardStatistics);
 router.get("/", getTasks);
+router.get("/user/:email", getTasksByUser);
 router.get("/:id", getTask);
 
 router.put("/create-subtask/:id", protectRoute, isAdminRoute, createSubTask);
