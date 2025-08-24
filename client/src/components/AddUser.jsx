@@ -142,7 +142,7 @@ const AddUser = ({ open, setOpen, userData }) => {
               <Loading />
             </div>
           ) : (
-            <div className="py-3 mt-4 sm:flex sm:flex-row-reverse">
+            <div className="py-3 mt-4 sm:flex sm:flex-row-reverse gap-4">
               <Button
                 type="submit"
                 className="bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto"
@@ -151,7 +151,7 @@ const AddUser = ({ open, setOpen, userData }) => {
 
               <Button
                 type="button"
-                className="bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto"
+                className="bg-blue-600 px-5 text-sm font-semibold text-gray-900 sm:w-auto"
                 onClick={() => setOpen(false)}
                 label="Cancel"
               />

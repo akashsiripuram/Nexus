@@ -194,7 +194,7 @@ const AddTask = ({ open, setOpen, task, type }) => {
 
               <Button
                 type="button"
-                className="bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto"
+                className="bg-blue-600 px-5 text-sm font-semibold text-gray-900 sm:w-auto"
                 onClick={() => setOpen(false)}
                 label="Cancel"
               />

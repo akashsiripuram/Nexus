@@ -110,7 +110,7 @@ const AddSubTask = ({ open, setOpen, id, task }) => {
 
             <Button
               type="button"
-              className="bg-white border text-sm font-semibold text-gray-900 sm:w-auto"
+              className="bg-blue-600 border text-sm font-semibold text-gray-900 sm:w-auto"
               onClick={() => setOpen(false)}
               label="Cancel"
             />
