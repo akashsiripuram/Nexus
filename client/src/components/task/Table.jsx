@@ -15,6 +15,8 @@ import Button from "../Button";
 import ConfirmatioDialog from "../Dialogs";
 import axios from "axios";
 import AddTask from "./AddTask";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -23,10 +25,20 @@ const ICONS = {
 };
 
 const Table = ({ tasks }) => {
+  const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
   const [taskk, setTask] = useState(null);
+  
+  const handleRowClick = (e, taskId) => {
+    // Don't navigate if clicking on action buttons
+    if (e.target.closest('[data-no-navigate]')) {
+      return;
+    }
+    navigate(`/task/${taskId}`);
+  };
   const deleteClicks = (id) => {
     setSelected(id);
     setOpenDialog(true);
@@ -60,6 +72,7 @@ const Table = ({ tasks }) => {
       <tr className="w-full text-black  text-left">
         <th className="py-2">Task Title</th>
         <th className="py-2">Priority</th>
+        <th className="py-2">Created By</th>
         <th className="py-2 line-clamp-1">Created At</th>
         <th className="py-2">Assets</th>
         <th className="py-2">Team</th>
@@ -68,15 +81,26 @@ const Table = ({ tasks }) => {
   );
 
   const TableRow = ({ task }) => (
-    <tr className="border-b border-gray-200 text-gray-600 hover:bg-gray-300/10">
+    <tr 
+      className="border-b border-gray-200 text-gray-600 hover:bg-gray-300/10 cursor-pointer"
+      onClick={(e) => handleRowClick(e, task._id)}
+    >
       <td className="py-2">
         <div className="flex items-center gap-2">
           <div
             className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])}
           />
-          <p className="w-full line-clamp-2 text-base text-black">
-            {task?.title}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="w-full line-clamp-2 text-base text-black">
+              {task?.title}
+            </p>
+            {task.team?.some(member => member.email === user.email) && (
+              <div className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                <span>You</span>
+              </div>
+            )}
+          </div>
         </div>
       </td>
 
@@ -87,6 +111,17 @@ const Table = ({ tasks }) => {
           </span>
           <span className="capitalize line-clamp-1">
             {task?.priority} Priority
+          </span>
+        </div>
+      </td>
+
+      <td className="py-2">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 text-white flex items-center justify-center text-xs font-semibold">
+            {task.createdBy?.name ? task.createdBy.name[0].toUpperCase() : "U"}
+          </div>
+          <span className="text-sm font-medium text-gray-900 dark:text-white">
+            {task.createdBy?.name || "Unknown"}
           </span>
         </div>
       </td>
@@ -130,7 +165,7 @@ const Table = ({ tasks }) => {
         </div>
       </td>
 
-      <td className="py-2 flex gap-2 md:gap-4 justify-end">
+      <td className="py-2 flex gap-2 md:gap-4 justify-end" data-no-navigate>
         <Button
           className="text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base"
           label="Edit"

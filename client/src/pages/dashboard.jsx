@@ -15,12 +15,19 @@ import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 import UserInfo from "../components/UserInfo";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const TaskTable = ({ tasks }) => {
+const TaskTable = ({ tasks, currentUser }) => {
   const ICONS = {
     high: <MdKeyboardDoubleArrowUp />,
     medium: <MdKeyboardArrowUp />,
     low: <MdKeyboardArrowDown />,
+  };
+
+  const navigate = useNavigate();
+
+  const handleRowClick = (taskId) => {
+    navigate(`/task/${taskId}`);
   };
 
   const TableHeader = () => (
@@ -28,59 +35,86 @@ const TaskTable = ({ tasks }) => {
       <tr className="text-gray-900 dark:text-white text-left">
         <th className="py-3 px-4 font-semibold">Task Title</th>
         <th className="py-3 px-4 font-semibold">Priority</th>
+        <th className="py-3 px-4 font-semibold">Created By</th>
         <th className="py-3 px-4 font-semibold">Team</th>
-        <th className="py-3 px-4 font-semibold hidden md:block">Created At</th>
+        <th className="py-3 px-4 font-semibold hidden md:block">Deadline</th>
       </tr>
     </thead>
   );
 
-  const TableRow = ({ task }) => (
-    <tr className="border-b border-gray-100 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-      <td className="py-3 px-4">
-        <div className="flex items-center gap-3">
-          <div
-            className={clsx("w-3 h-3 rounded-full", TASK_TYPE[task.stage])}
-          />
-          <p className="text-base font-medium text-gray-900 dark:text-white">{task.title}</p>
-        </div>
-      </td>
-
-      <td className="py-3 px-4">
-        <div className="flex gap-2 items-center">
-          <span className={clsx("text-lg", PRIOTITYSTYELS[task.priority])}>
-            {ICONS[task.priority]}
-          </span>
-          <span className="capitalize text-sm font-medium">{task.priority}</span>
-        </div>
-      </td>
-
-      <td className="py-3 px-4">
-        <div className="flex">
-          {task.team.map((m, index) => (
+  const TableRow = ({ task, currentUser }) => {
+    return (
+      <tr 
+        className="border-b border-gray-100 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+        onClick={() => handleRowClick(task._id)}
+      >
+        <td className="py-3 px-4">
+          <div className="flex items-center gap-3">
             <div
-              key={index}
-              className={clsx(
-                "w-8 h-8 rounded-full text-white flex items-center justify-center text-sm -mr-2 border-2 border-white dark:border-gray-800 shadow-sm",
-                BGS[index % BGS.length]
+              className={clsx("w-3 h-3 rounded-full", TASK_TYPE[task.stage])}
+            />
+            <div className="flex items-center gap-2">
+              <p className="text-base font-medium text-gray-900 dark:text-white">{task.title}</p>
+              {task.team?.some(member => member.email === currentUser.email) && (
+                <div className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                  <span>You</span>
+                </div>
               )}
-            >
-              <UserInfo user={m} />
             </div>
-          ))}
-        </div>
-      </td>
-      <td className="py-3 px-4 hidden md:block">
-        <span className="text-sm text-gray-500 dark:text-gray-400">
-          {moment(task?.date).fromNow()}
-        </span>
-      </td>
-    </tr>
-  );
+          </div>
+        </td>
+
+        <td className="py-3 px-4">
+          <div className="flex gap-2 items-center">
+            <span className={clsx("text-lg", PRIOTITYSTYELS[task.priority])}>
+              {ICONS[task.priority]}
+            </span>
+            <span className="capitalize text-sm font-medium">{task.priority}</span>
+          </div>
+        </td>
+
+        <td className="py-3 px-4">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 text-white flex items-center justify-center text-xs font-semibold">
+              {task.createdBy?.name ? task.createdBy.name[0].toUpperCase() : "U"}
+            </div>
+            <span className="text-sm font-medium text-gray-900 dark:text-white">
+              {task.createdBy?.name || "Unknown"}
+            </span>
+          </div>
+        </td>
+
+        <td className="py-3 px-4">
+          <div className="flex">
+            {task.team.map((m, index) => (
+              <div
+                key={index}
+                className={clsx(
+                  "w-8 h-8 rounded-full text-white flex items-center justify-center text-sm -mr-2 border-2 border-white dark:border-gray-800 shadow-sm",
+                  BGS[index % BGS.length]
+                )}
+              >
+                <UserInfo user={m} />
+              </div>
+            ))}
+          </div>
+        </td>
+        <td className="py-3 px-4 hidden md:block">
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {moment(task?.date).fromNow()}
+          </span>
+        </td>
+      </tr>
+    );
+  };
 
   return (
     <div className="w-full lg:w-2/3 bg-white dark:bg-gray-800 px-4 py-6 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white">Recent Tasks</h3>
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+          {currentUser.isAdmin ? "Recent Tasks" : "My Recent Tasks"}
+        </h3>
         <span className="text-sm text-gray-500 dark:text-gray-400">{tasks?.length || 0} tasks</span>
       </div>
       <div className="overflow-x-auto">
@@ -88,7 +122,7 @@ const TaskTable = ({ tasks }) => {
           <TableHeader />
           <tbody>
             {tasks?.map((task, id) => (
-              <TableRow key={id} task={task} />
+              <TableRow key={id} task={task} currentUser={currentUser} />
             ))}
           </tbody>
         </table>
@@ -167,14 +201,21 @@ const Dashboard = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_APP_BACKEND_URL}/api/task/`
-      );
-      if (response) {
-        const filteredTasks = response.data.tasks.filter(
-          (task) => task.createdBy === user._id
+      let response;
+      if (user.isAdmin) {
+        // Admin sees all tasks
+        response = await axios.get(
+          `${import.meta.env.VITE_APP_BACKEND_URL}/api/task/`
         );
-        setTasks(filteredTasks);
+      } else {
+        // Regular users see only tasks assigned to them
+        response = await axios.get(
+          `${import.meta.env.VITE_APP_BACKEND_URL}/api/task/user/${user.email}`
+        );
+      }
+      
+      if (response.data) {
+        setTasks(response.data.tasks);
       }
     } catch (error) {
       console.log(error);
@@ -183,12 +224,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [user.email]);
 
   const stats = [
     {
       _id: "1",
-      label: "Total Tasks",
+      label: user.isAdmin ? "Total Tasks" : "My Tasks",
       total: tasks?.length || 0,
       icon: <FaNewspaper size={24} />,
       bg: "bg-gradient-to-br from-blue-500 to-blue-600",
@@ -251,7 +292,7 @@ const Dashboard = () => {
 
       {/* Tables Section */}
       <div className="flex flex-col lg:flex-row gap-6">
-        <TaskTable tasks={tasks?.slice(0, 10)} />
+        <TaskTable tasks={tasks?.slice(0, 10)} currentUser={user} />
         {/* <UserTable users={summary.users} /> */}
       </div>
     </div>

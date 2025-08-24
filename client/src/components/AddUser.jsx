@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import ModalWrapper from "./ModalWrapper";
@@ -14,40 +14,69 @@ const AddUser = ({ open, setOpen, userData }) => {
   let defaultValues = userData ?? {};
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const isLoading = false,
-    isUpdating = false;
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({ defaultValues });
 
   const handleOnSubmit = async (data) => {
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/update/${user?._id}`,
+      setIsLoading(true);
+      
+      // First, create a new user account
+      const newUserResponse = await axios.post(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/register`,
         {
-          team: [
-            ...user?.team,
-            {
-              name: data.name,
-              role: data.role,
-              email: data.email,
-            },
-          ],
+          name: data.name,
+          email: data.email,
+          password: data.email, // Use email as password
+          isAdmin: false, // New team members are not admins by default
         }
       );
-      if (response.data) {
-        // navigate("/dashboard");
-        toast.success("member added succesfully !!");
-        setOpen(false);
-        dispatch(setCredentials(response.data.user));
+
+      if (newUserResponse.data) {
+        // Then, add the new user to the current user's team
+        const response = await axios.put(
+          `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/update/${user?._id}`,
+          {
+            team: [
+              ...user?.team,
+              {
+                name: data.name,
+                role: data.role,
+                email: data.email,
+                userId: newUserResponse.data._id, // Store the new user's ID
+                isActive: true,
+              },
+            ],
+          }
+        );
+        
+        if (response.data) {
+          toast.success("Team member added successfully! Account created with email as password.");
+          setOpen(false);
+          dispatch(setCredentials(response.data.user));
+          reset(); // Reset form
+        } else {
+          toast.error("Failed to add team member");
+        }
       } else {
-        console.log("error");
+        toast.error("Failed to create user account");
       }
     } catch (error) {
       console.log(error);
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,7 +88,7 @@ const AddUser = ({ open, setOpen, userData }) => {
             as="h2"
             className="text-base font-bold leading-6 text-gray-900 mb-4"
           >
-            {userData ? "UPDATE PROFILE" : "ADD NEW USER"}
+            {userData ? "UPDATE PROFILE" : "ADD NEW TEAM MEMBER"}
           </Dialog.Title>
           <div className="mt-2 flex flex-col gap-6">
             <Textbox
@@ -81,6 +110,10 @@ const AddUser = ({ open, setOpen, userData }) => {
               className="w-full rounded"
               register={register("email", {
                 required: "Email Address is required!",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address",
+                },
               })}
               error={errors.email ? errors.email.message : ""}
             />
@@ -96,6 +129,12 @@ const AddUser = ({ open, setOpen, userData }) => {
               })}
               error={errors.role ? errors.role.message : ""}
             />
+            
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                <strong>Note:</strong> A new account will be created for this team member using their email address as both email and password. They can log in and view tasks assigned to them.
+              </p>
+            </div>
           </div>
 
           {isLoading || isUpdating ? (
@@ -107,7 +146,7 @@ const AddUser = ({ open, setOpen, userData }) => {
               <Button
                 type="submit"
                 className="bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto"
-                label="Submit"
+                label="Add Team Member"
               />
 
               <Button

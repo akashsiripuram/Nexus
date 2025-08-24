@@ -129,6 +129,10 @@ export const dashboardStatistics = async (req, res) => {
             path: "team",
             select: "name role title email",
           })
+          .populate({
+            path: "createdBy",
+            select: "name email",
+          })
           .sort({ _id: -1 })
       : await Task.find({
           isTrashed: false,
@@ -137,6 +141,10 @@ export const dashboardStatistics = async (req, res) => {
           .populate({
             path: "team",
             select: "name role title email",
+          })
+          .populate({
+            path: "createdBy",
+            select: "name email",
           })
           .sort({ _id: -1 });
 
@@ -206,6 +214,47 @@ export const getTasks = async (req, res) => {
         path: "team",
         select: "name title email",
       })
+      .populate({
+        path: "createdBy",
+        select: "name email",
+      })
+      .sort({ _id: -1 });
+
+    const tasks = await queryResult;
+
+    res.status(200).json({
+      status: true,
+      tasks,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ status: false, message: error.message });
+  }
+};
+
+export const getTasksByUser = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const { stage, isTrashed } = req.query;
+
+    let query = { 
+      isTrashed: isTrashed ? true : false,
+      "team.email": email // Find tasks where the user's email is in the team array
+    };
+
+    if (stage) {
+      query.stage = stage;
+    }
+
+    let queryResult = Task.find(query)
+      .populate({
+        path: "team",
+        select: "name title email",
+      })
+      .populate({
+        path: "createdBy",
+        select: "name email",
+      })
       .sort({ _id: -1 });
 
     const tasks = await queryResult;
@@ -224,15 +273,26 @@ export const getTask = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const task = await Task.findById(id)
+    const task = await Task.findOne({ _id: id, isTrashed: false })
       .populate({
         path: "team",
         select: "name title role email",
       })
       .populate({
+        path: "createdBy",
+        select: "name email",
+      })
+      .populate({
         path: "activities.by",
         select: "name",
       });
+
+    if (!task) {
+      return res.status(404).json({
+        status: false,
+        message: "Task not found or has been moved to trash",
+      });
+    }
 
     res.status(200).json({
       status: true,
@@ -274,19 +334,17 @@ export const createSubTask = async (req, res) => {
 export const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
-    // const { title, date, team, stage, priority, assets, activities } = req.body;
-
-    // const task = await Task.findById(id);
-    // task.title = title;
-    // task.date = date;
-    // task.priority = priority.toLowerCase();
-    // task.assets = assets;
-    // task.stage = stage.toLowerCase();
-    // task.team = team;
-    // task.activities = activities;
-    // await task.save();
     const updateFields = req.body;
-    const task = await Task.findByIdAndUpdate(id, updateFields, { new: true });
+    const task = await Task.findByIdAndUpdate(id, updateFields, { new: true })
+      .populate({
+        path: "team",
+        select: "name title email",
+      })
+      .populate({
+        path: "createdBy",
+        select: "name email",
+      });
+    
     res
       .status(200)
       .json({ status: true, task, message: "Task updated successfully." });

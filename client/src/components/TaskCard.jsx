@@ -14,6 +14,7 @@ import { FaList } from "react-icons/fa";
 import UserInfo from "./UserInfo";
 import { IoMdAdd } from "react-icons/io";
 import AddSubTask from "./task/AddSubTask";
+import { useNavigate } from "react-router-dom";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -24,6 +25,15 @@ const ICONS = {
 const TaskCard = ({ task }) => {
   const { user } = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCardClick = (e) => {
+    // Don't navigate if clicking on the admin dialog or add subtask button
+    if (e.target.closest('[data-no-navigate]')) {
+      return;
+    }
+    navigate(`/task/${task._id}`);
+  };
 
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -53,7 +63,10 @@ const TaskCard = ({ task }) => {
 
   return (
     <>
-      <div className="w-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-[1.02] overflow-hidden">
+      <div 
+        className="w-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-[1.02] overflow-hidden cursor-pointer"
+        onClick={handleCardClick}
+      >
         {/* Header */}
         <div className="p-6 pb-4">
           <div className="w-full flex justify-between items-start mb-4">
@@ -65,7 +78,7 @@ const TaskCard = ({ task }) => {
               <span className="uppercase font-semibold">{task?.priority} Priority</span>
             </div>
 
-            {user?.isAdmin && <TaskDialog task={task} />}
+            {user?.isAdmin && <div data-no-navigate><TaskDialog task={task} /></div>}
           </div>
 
           {/* Task Info */}
@@ -81,6 +94,24 @@ const TaskCard = ({ task }) => {
               <span className="font-medium">Due:</span>
               <span>{formatDate(new Date(task?.date))}</span>
             </div>
+            
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <span className="font-medium">Created by:</span>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 text-white flex items-center justify-center text-xs font-semibold">
+                  {task.createdBy?.name ? task.createdBy.name[0].toUpperCase() : "U"}
+                </div>
+                <span>{task.createdBy?.name || "Unknown"}</span>
+              </div>
+            </div>
+            
+            {/* Show if current user is assigned to this task */}
+            {task.team?.some(member => member.email === user.email) && (
+              <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <span className="font-medium">Assigned to you</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -154,6 +185,7 @@ const TaskCard = ({ task }) => {
             <button
               onClick={() => setOpen(true)}
               disabled={!user.isAdmin}
+              data-no-navigate
               className="w-full flex items-center justify-center gap-3 py-3 px-4 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
             >
               <IoMdAdd className="text-lg" />
