@@ -2,6 +2,11 @@
 
 A modern team collaboration platform built with React, Node.js, and MongoDB.
 
+## 🌐 Live Demo
+
+- **Frontend**: [https://nexus-v1-phi.vercel.app/](https://nexus-v1-phi.vercel.app/)
+- **Backend API**: [https://nexus-eight-lovat.vercel.app/](https://nexus-eight-lovat.vercel.app/)
+
 ## Features
 
 - **User Management**: Create and manage team member accounts
