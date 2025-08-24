@@ -13,34 +13,83 @@ import Tasks from "./pages/Tasks";
 import Trash from "./pages/Trash";
 import Users from "./pages/Users";
 import Dashboard from "./pages/dashboard";
+import Forums from "./pages/Forums";
+import ForumDetail from "./pages/ForumDetail";
 import { setCredentials, setOpenSidebar } from "./redux/slices/authSlice";
 import Register from "./pages/Register";
+import { useTheme } from "./contexts/ThemeContext";
 
 function Layout() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { isDark } = useTheme();
+  
   useEffect(() => {
     if (localStorage.getItem("userInfo")) {
       dispatch(setCredentials(JSON.parse(localStorage.getItem("userInfo"))));
     }
   }, []);
   
+  // Update CSS variables when theme changes
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.style.setProperty('--bg-color', '#111827');
+    } else {
+      root.style.setProperty('--bg-color', '#f9fafb');
+    }
+    
+    // Force background on all elements
+    const forceBackground = () => {
+      const elements = document.querySelectorAll('html, body, #root, .main-content, .content-wrapper, .scrollable-content, .overflow-fix');
+      elements.forEach(el => {
+        if (el) {
+          el.style.backgroundColor = isDark ? '#111827' : '#f9fafb';
+          el.style.background = isDark ? '#111827' : '#f9fafb';
+        }
+      });
+    };
+    
+    // Run immediately and after a short delay
+    forceBackground();
+    setTimeout(forceBackground, 100);
+    setTimeout(forceBackground, 500);
+  }, [isDark]);
+  
   const location = useLocation();
   return user ? (
-    <div className="w-full h-screen flex flex-col lg:flex-row bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      {/* Desktop Sidebar */}
-      <div className="h-screen bg-white dark:bg-gray-800 sticky top-0 hidden lg:block border-r border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300 ease-in-out">
-        <Sidebar />
+    <div 
+      className="w-full h-screen flex flex-col lg:flex-row transition-colors duration-300"
+      style={{ backgroundColor: 'var(--bg-color, #f9fafb)' }}
+    >
+      {/* Desktop Sidebar - Fixed height with its own scroll */}
+      <div className="h-screen bg-white dark:bg-gray-800 hidden lg:flex flex-col border-r border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300 ease-in-out z-10">
+        <div className="flex-1 overflow-y-auto sidebar-scroll">
+          <Sidebar />
+        </div>
       </div>
 
       {/* Mobile Sidebar */}
       <MobileSidebar />
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-y-auto">
-        <Navbar />
-        <div className="p-4 lg:p-6 xl:p-8 max-w-7xl mx-auto">
-          <Outlet />
+      {/* Main Content - Separate scrollable area */}
+      <div 
+        className="flex-1 flex flex-col min-h-screen content-wrapper"
+        style={{ backgroundColor: 'var(--bg-color, #f9fafb)' }}
+      >
+        <div className="navbar">
+          <Navbar />
+        </div>
+        <div 
+          className="flex-1 overflow-y-auto main-scroll main-content-area"
+          style={{ backgroundColor: 'var(--bg-color, #f9fafb)' }}
+        >
+          <div 
+            className="p-4 lg:p-6 xl:p-8 max-w-7xl mx-auto min-h-full overflow-fix"
+            style={{ backgroundColor: 'var(--bg-color, #f9fafb)' }}
+          >
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>
@@ -99,7 +148,7 @@ const MobileSidebar = () => {
 
 function App() {
   return (
-    <main className="w-full min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <main className="w-full min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 main-content">
       <Routes>
         <Route element={<Layout />}>
           <Route index path="/" element={<Navigate to="/dashboard" />} />
@@ -109,6 +158,8 @@ function App() {
           <Route path="/team" element={<Users />} />
           <Route path="/trashed" element={<Trash />} />
           <Route path="/task/:id" element={<TaskDetails />} />
+          <Route path="/forums" element={<Forums />} />
+          <Route path="/forums/:id" element={<ForumDetail />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

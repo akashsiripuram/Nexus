@@ -26,7 +26,8 @@ import {
   FaCalendarAlt,
   FaBell,
   FaCog,
-  FaQuestionCircle
+  FaQuestionCircle,
+  FaComments
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
@@ -58,6 +59,13 @@ const navigationSections = [
         icon: <FaChartLine size={20} />,
         badge: "New",
         description: "Performance insights"
+      },
+      {
+        label:"Forums",
+        link:"forums",
+        icon: <FaComments size={20} />,
+        badge:null,
+        description:"Discussion group"
       }
     ]
   },

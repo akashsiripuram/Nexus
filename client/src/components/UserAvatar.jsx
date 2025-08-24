@@ -7,18 +7,37 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/slices/authSlice";
 import { getInitials } from "../utils";
 
-const UserAvatar = () => {
+const UserAvatar = ({ user: propUser, size = "md", showMenu = true }) => {
   const [open, setOpen] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
-  const { user } = useSelector((state) => state.auth);
+  const { user: authUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Use prop user if provided, otherwise use auth user
+  const user = propUser || authUser;
 
   const logoutHandler = () => {
     console.log("logout");
     navigate("/login");
     dispatch(logout());
   };
+
+  // If no menu is needed, just render the avatar
+  if (!showMenu) {
+    const sizeClasses = {
+      sm: "w-8 h-8 text-sm",
+      md: "w-10 h-10 text-base",
+      lg: "w-12 h-12 text-lg",
+      xl: "w-16 h-16 text-xl"
+    };
+
+    return (
+      <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-r from-primary-500 to-accent-500 flex items-center justify-center text-white font-semibold`}>
+        {user?.avatar || getInitials(user?.name)}
+      </div>
+    );
+  }
 
   return (
     <>

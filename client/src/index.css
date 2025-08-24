@@ -17,10 +17,259 @@
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Global background and scrollbar fixes */
+html, body, #root {
+  background-color: #f9fafb !important;
+  min-height: 100vh;
+}
+
+html.dark, body.dark, #root.dark,
+html[class*="dark"], body[class*="dark"], #root[class*="dark"] {
+  background-color: #111827 !important;
+}
+
+/* Force background on root elements */
+html {
+  background-color: #f9fafb !important;
+}
+
+body {
+  background-color: #f9fafb !important;
+}
+
+#root {
+  background-color: #f9fafb !important;
+}
+
+/* Dark mode overrides */
+html.dark, body.dark, #root.dark,
+html[class*="dark"], body[class*="dark"], #root[class*="dark"] {
+  background-color: #111827 !important;
+}
+
+
+
+/* Enhanced scrollbar styles for dark theme */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 hover:bg-gray-500;
+}
+
+.dark ::-webkit-scrollbar-corner {
+  @apply bg-gray-800;
+}
+
+
+
+
+
+/* Separate scrollable areas for sidebar and main content */
+.sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.dark .sidebar-scroll {
+  scrollbar-color: #4b5563 transparent;
+}
+
+.main-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.dark .main-scroll {
+  scrollbar-color: #4b5563 transparent;
+}
+
+
+
+/* Custom scrollbar for sidebar */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 3px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+.dark .sidebar-scroll::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
+.dark .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
+
+/* Sidebar content spacing */
+.sidebar-scroll > div {
+  padding: 1.5rem;
+  min-height: 100%;
+}
+
+/* Custom scrollbar for main content */
+.main-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main-scroll::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 4px;
+}
+
+.main-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+.dark .main-scroll::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
+.dark .main-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
+
+/* Ensure content area maintains background during scroll */
+.content-wrapper {
+  background-color: #f9fafb !important;
+  min-height: 100%;
+}
+
+.dark .content-wrapper,
+[class*="dark"] .content-wrapper {
+  background-color: #111827 !important;
+}
+
+/* Fix for any overflow areas */
+.overflow-fix {
+  background-color: #f9fafb !important;
+}
+
+.dark .overflow-fix,
+[class*="dark"] .overflow-fix {
+  background-color: #111827 !important;
+}
+
+/* CSS Variables for theme colors */
+:root {
+  --bg-color: #f9fafb;
+  --bg-color-dark: #111827;
+}
+
+/* Dark mode CSS variables */
+.dark {
+  --bg-color: #111827;
+}
+
+[class*="dark"] {
+  --bg-color: #111827;
+}
+
+/* Global background enforcement */
+html, body {
+  background-color: var(--bg-color) !important;
+  background: var(--bg-color) !important;
+}
+
+/* Ensure all elements inherit the background */
+* {
+  background-color: inherit;
+}
+
+/* Force background on specific elements that need it */
+html, body, #root, .main-content, .content-wrapper, .scrollable-content, .overflow-fix {
+  background-color: var(--bg-color) !important;
+  background: var(--bg-color) !important;
+}
+
+/* Additional background coverage */
+* {
+  background-color: inherit;
+}
+
+/* Force background on all main containers */
+.main-container,
+.page-wrapper,
+.content-area {
+  background-color: #f9fafb !important;
+}
+
+.dark .main-container,
+.dark .page-wrapper,
+.dark .content-area,
+[class*="dark"] .main-container,
+[class*="dark"] .page-wrapper,
+[class*="dark"] .content-area {
+  background-color: #111827 !important;
+}
+
+/* Ensure no white backgrounds in any scrollable area */
+.overflow-y-auto,
+.overflow-y-scroll,
+.scroll-container {
+  background-color: #f9fafb !important;
+}
+
+.dark .overflow-y-auto,
+.dark .overflow-y-scroll,
+.dark .scroll-container,
+[class*="dark"] .overflow-y-auto,
+[class*="dark"] .overflow-y-scroll,
+[class*="dark"] .scroll-container {
+  background-color: #111827 !important;
+}
+
 /* Custom component classes */
 @layer components {
   .btn-primary {
     @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900;
+  }
+  
+  /* Line clamp utilities */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+  
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+  
+  /* Shadow utilities */
+  .shadow-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
   
   .btn-secondary {
