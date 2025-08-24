@@ -59,7 +59,7 @@ const AddSubTask = ({ open, setOpen, id, task }) => {
         <form onSubmit={handleSubmit(handleOnSubmit)} className="">
           <Dialog.Title
             as="h2"
-            className="text-base font-bold leading-6 text-gray-900 mb-4"
+            className="text-base font-bold leading-6 text-gray-300 mb-4"
           >
             ADD SUB-TASK
           </Dialog.Title>

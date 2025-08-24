@@ -36,8 +36,8 @@ const UserList = ({ setTeam, team }) => {
         multiple
       >
         <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-default rounded bg-white pl-3 pr-10 text-left px-3 py-2.5 2xl:py-3 border border-gray-300 sm:text-sm">
-            <span className="block truncate">
+          <Listbox.Button className="relative w-full cursor-default rounded bg-gray-700 pl-3 pr-10 text-left px-3 py-2.5 2xl:py-3 sm:text-sm">
+            <span className="block truncate text-white">
               {selectedUsers?.map((user) => user.name).join(", ")}
             </span>
 

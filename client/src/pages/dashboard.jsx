@@ -110,7 +110,7 @@ const TaskTable = ({ tasks, currentUser }) => {
   };
 
   return (
-    <div className="w-full lg:w-2/3 bg-white dark:bg-gray-800 px-4 py-6 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700">
+    <div className="w-full bg-white dark:bg-gray-800 px-4 py-6 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
           {currentUser.isAdmin ? "Recent Tasks" : "My Recent Tasks"}

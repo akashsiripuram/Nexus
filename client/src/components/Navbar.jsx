@@ -27,10 +27,10 @@ const Navbar = () => {
           withCredentials: true,
         }
       );
-      
+
       // Clear any client-side cookies
       Cookies.remove("token");
-      
+
       toast.success("Logged out successfully!");
       navigate("/login");
       dispatch(logout());
@@ -53,38 +53,25 @@ const Navbar = () => {
         >
           ☰
         </button>
-
-        {/* Search Bar */}
-        <div className="hidden md:flex items-center w-64 lg:w-80 xl:w-96">
-          <div className="relative w-full">
-            <MdOutlineSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" />
-            <input
-              type="text"
-              placeholder="Search tasks, projects..."
-              className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200"
-            />
-          </div>
-        </div>
       </div>
 
       <div className="flex gap-3 items-center">
         {/* Theme Toggle */}
-       
 
         {/* User Avatar */}
         <div className="flex items-center gap-3">
           <div className="p-3 py-2 rounded-full bg-gradient-to-r from-primary-600 to-accent-600 shadow-glow">
             <p className="text-white font-semibold text-sm">
-              {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+              {user?.name?.charAt(0)?.toUpperCase() || "U"}
             </p>
           </div>
-          
+
           <div className="hidden sm:block">
             <p className="text-sm font-medium text-gray-900 dark:text-white">
-              {user?.name || 'User'}
+              {user?.name || "User"}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              {user?.isAdmin ? 'Admin' : 'Member'}
+              {user?.isAdmin ? "Admin" : "Member"}
             </p>
           </div>
         </div>

@@ -31,10 +31,10 @@ const Table = ({ tasks }) => {
   const [selected, setSelected] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
   const [taskk, setTask] = useState(null);
-  
+
   const handleRowClick = (e, taskId) => {
     // Don't navigate if clicking on action buttons
-    if (e.target.closest('[data-no-navigate]')) {
+    if (e.target.closest("[data-no-navigate]")) {
       return;
     }
     navigate(`/task/${taskId}`);
@@ -81,7 +81,7 @@ const Table = ({ tasks }) => {
   );
 
   const TableRow = ({ task }) => (
-    <tr 
+    <tr
       className="border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-colors"
       onClick={(e) => handleRowClick(e, task._id)}
     >
@@ -94,7 +94,7 @@ const Table = ({ tasks }) => {
             <p className="w-full line-clamp-2 text-base text-gray-900 dark:text-white">
               {task?.title}
             </p>
-            {task.team?.some(member => member.email === user.email) && (
+            {task.team?.some((member) => member.email === user.email) && (
               <div className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
                 <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
                 <span>You</span>
@@ -167,14 +167,14 @@ const Table = ({ tasks }) => {
 
       <td className="py-2 flex gap-2 md:gap-4 justify-end" data-no-navigate>
         <Button
-          className="text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base"
+          className="text-blue-600 hover:text-blue-100 text-sm md:text-base"
           label="Edit"
           type="button"
           onClick={() => editClicks(task)}
         />
 
         <Button
-          className="text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base"
+          className="text-red-700 hover:text-red-500 text-sm md:text-base"
           label="Delete"
           type="button"
           onClick={() => deleteClicks(task._id)}
