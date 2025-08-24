@@ -30,7 +30,7 @@ export default function Chat() {
   }, [messages]);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080');
+    const ws = new WebSocket(`${import.meta.env.VITE_APP_SOCKET_URL}`);
     wsRef.current = ws;
 
     ws.onopen = () => {
