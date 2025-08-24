@@ -1,7 +1,7 @@
-import { response } from "express";
 import User from "../models/user.js";
 import { createJWT } from "../utils/index.js";
 import Notice from "../models/notification.js";
+import { transporter } from "../nodemailer.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -24,6 +24,35 @@ export const registerUser = async (req, res) => {
     });
 
     if (user) {
+      // Send email notification to the new user
+      try {
+        await transporter.sendMail({
+          from: "gitty695@gmail.com",
+          to: `${email}`,
+          subject: "Welcome to Nexus - Your Account Has Been Created",
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h2 style="color: #2563eb; text-align: center;">Welcome to Nexus!</h2>
+              <p>Hello <strong>${name}</strong>,</p>
+              <p>Your account has been successfully created on Nexus. Here are your login details:</p>
+              <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Password:</strong> ${password}</p>
+              </div>
+              <p>You can now log in to your account and start collaborating with your team.</p>
+              <p>If you have any questions or need assistance, please don't hesitate to contact your team administrator.</p>
+              <p style="margin-top: 30px; color: #6b7280; font-size: 14px;">
+                Best regards,<br>
+                The Nexus Team
+              </p>
+            </div>
+          `,
+        });
+      } catch (emailError) {
+        console.log("Email sending failed:", emailError);
+        // Don't fail the registration if email fails
+      }
+
       isAdmin ? createJWT(res, user._id) : null;
 
       user.password = undefined;
