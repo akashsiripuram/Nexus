@@ -33,7 +33,7 @@ const Timesheet = () => {
     setLoading(true);
     try {
       const weekStart = getWeekStart(selectedWeek);
-      const response = await axios.get(`/api/timesheet/${user._id}/week?weekStartDate=${weekStart}`, {
+      const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/api/timesheet/${user._id}/week?weekStartDate=${weekStart}`, {
         withCredentials: true
       });
       setTimesheet(response.data.data);
@@ -56,7 +56,7 @@ const Timesheet = () => {
     setLoading(true);
     try {
       const weekStart = getWeekStart(selectedWeek);
-      const response = await axios.post(`/api/timesheet/${user._id}/auto-generate`, {
+      const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/api/timesheet/${user._id}/auto-generate`, {
         weekStartDate: weekStart
       }, {
         withCredentials: true
@@ -76,7 +76,7 @@ const Timesheet = () => {
     if (!timesheet?._id) return;
     
     try {
-      await axios.post(`/api/timesheet/${timesheet._id}/send-email`, {}, {
+      await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/api/timesheet/${timesheet._id}/send-email`, {}, {
         withCredentials: true
       });
       toast.success('Timesheet email sent successfully!');
